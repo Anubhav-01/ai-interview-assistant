@@ -1,0 +1,13 @@
+{
+  "name": "ai-interview-assistant-landing",
+  "version": "1.0.0",
+  "description": "Landing + download page for the AI Interview Assistant desktop app",
+  "private": true,
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

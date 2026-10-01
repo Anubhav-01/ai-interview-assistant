@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 222 47% 7%;
+  --foreground: 214 30% 92%;
+  --card: 222 44% 10%;
+  --card-foreground: 214 30% 92%;
+  --muted: 222 30% 16%;
+  --muted-foreground: 215 16% 62%;
+  --border: 222 26% 20%;
+  --primary: 210 100% 60%;
+  --primary-foreground: 222 47% 7%;
+  --accent: 160 84% 45%;
+  --destructive: 0 72% 55%;
+}
+
+.light {
+  --background: 210 30% 97%;
+  --foreground: 222 40% 12%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 40% 12%;
+  --muted: 214 25% 92%;
+  --muted-foreground: 215 15% 42%;
+  --border: 214 20% 84%;
+  --primary: 212 92% 45%;
+  --primary-foreground: 0 0% 100%;
+  --accent: 160 84% 32%;
+  --destructive: 0 72% 48%;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  @apply bg-background text-foreground antialiased;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+/* Custom titlebar drag region */
+.drag-region {
+  -webkit-app-region: drag;
+}
+.no-drag {
+  -webkit-app-region: no-drag;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted));
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--border));
+}
+
+/* Answer markdown-ish rendering */
+.answer-body pre {
+  @apply bg-muted rounded-md p-3 my-2 overflow-x-auto text-[0.9em] leading-relaxed;
+}
+.answer-body code {
+  font-family: "Cascadia Code", Consolas, monospace;
+}
+.answer-body p {
+  @apply my-1.5;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+.listening-dot {
+  animation: pulse-dot 1.2s ease-in-out infinite;
+}

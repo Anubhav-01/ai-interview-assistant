@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Interview Assistant — local-first desktop app</title>
+  <meta name="description" content="A free, privacy-first AI Interview Assistant for Windows. Your resume, your API key, your machine. No accounts, no tracking, no cloud." />
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card: #111726;
+      --border: #26304a;
+      --text: #dfe6f3;
+      --muted: #8b97ad;
+      --primary: #3b9eff;
+      --accent: #22c38a;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+    }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+    header { padding: 72px 0 40px; text-align: center; }
+    .pill {
+      display: inline-block; font-size: 12px; color: var(--accent);
+      border: 1px solid var(--accent); border-radius: 999px;
+      padding: 3px 12px; margin-bottom: 20px; letter-spacing: 0.04em;
+    }
+    h1 { font-size: 44px; line-height: 1.15; letter-spacing: -0.02em; }
+    h1 .grad {
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .sub { color: var(--muted); font-size: 18px; max-width: 620px; margin: 18px auto 0; }
+    .cta { margin-top: 32px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 22px; border-radius: 10px; font-weight: 600;
+      text-decoration: none; font-size: 15px; transition: opacity .15s, transform .15s;
+    }
+    .btn:hover { opacity: .88; transform: translateY(-1px); }
+    .btn-primary { background: var(--primary); color: #07101f; }
+    .btn-ghost { border: 1px solid var(--border); color: var(--text); }
+    .note { margin-top: 14px; font-size: 12.5px; color: var(--muted); }
+
+    .term {
+      margin: 48px auto 0; max-width: 680px; border: 1px solid var(--border);
+      border-radius: 12px; background: var(--card); overflow: hidden; text-align: left;
+      box-shadow: 0 24px 60px rgba(0,0,0,.45);
+    }
+    .term-bar { display: flex; gap: 6px; padding: 10px 14px; border-bottom: 1px solid var(--border); }
+    .dot { width: 10px; height: 10px; border-radius: 50%; background: #2c3650; }
+    .dot:first-child { background: #e5534b; } .dot:nth-child(2) { background: #d9a40a; } .dot:nth-child(3) { background: #2bbd6e; }
+    .term-body { padding: 18px 20px; font-family: Consolas, "Cascadia Code", monospace; font-size: 13.5px; }
+    .q { color: var(--muted); }
+    .a { color: var(--text); margin: 6px 0 14px; }
+    .tag { color: var(--primary); font-size: 11px; }
+
+    section { padding: 56px 0 8px; }
+    h2 { font-size: 24px; margin-bottom: 24px; text-align: center; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+    .card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 20px;
+    }
+    .card h3 { font-size: 15.5px; margin-bottom: 8px; }
+    .card p { font-size: 13.5px; color: var(--muted); }
+    .emoji { font-size: 20px; display: block; margin-bottom: 10px; }
+
+    .steps { max-width: 640px; margin: 0 auto; counter-reset: step; }
+    .step { display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px dashed var(--border); }
+    .step:last-child { border-bottom: none; }
+    .step::before {
+      counter-increment: step; content: counter(step);
+      width: 28px; height: 28px; flex-shrink: 0; border-radius: 50%;
+      background: rgba(59,158,255,.15); color: var(--primary);
+      display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px;
+    }
+    .step code { background: #1a2338; border-radius: 5px; padding: 1px 7px; font-size: 12.5px; }
+
+    .privacy {
+      max-width: 680px; margin: 0 auto; background: rgba(34,195,138,.07);
+      border: 1px solid rgba(34,195,138,.35); border-radius: 12px; padding: 22px 24px;
+    }
+    .privacy h3 { color: var(--accent); margin-bottom: 8px; font-size: 16px; }
+    .privacy p { font-size: 13.5px; color: var(--muted); }
+
+    footer { padding: 48px 0 40px; text-align: center; color: var(--muted); font-size: 12.5px; }
+    footer a { color: var(--primary); text-decoration: none; }
+    @media (max-width: 600px) { h1 { font-size: 32px; } }
+  </style>
+</head>
+<body>
+  <header class="wrap">
+    <span class="pill">FREE · OPEN SOURCE · LOCAL-FIRST</span>
+    <h1>AI Interview Assistant<br /><span class="grad">that lives on your computer</span></h1>
+    <p class="sub">
+      Listens to interview questions, grounds answers in <em>your real resume</em>, and suggests
+      concise, speakable responses. Your API key, your machine — no accounts, no tracking, no cloud.
+    </p>
+    <div class="cta">
+      <a class="btn btn-primary" href="https://github.com/Anubhav-01/ai-interview-assistant/releases/latest/download/ai-interview-assistant-setup.exe">
+        ⬇ Download for Windows
+      </a>
+      <a class="btn btn-ghost" href="https://github.com/Anubhav-01/ai-interview-assistant">View on GitHub</a>
+    </div>
+    <p class="note">
+      Windows installer · or grab the <a style="color:var(--primary)" href="https://github.com/Anubhav-01/ai-interview-assistant/releases/latest/download/ai-interview-assistant-portable.exe">portable .exe</a>
+      · works offline in Mock mode, bring your own OpenAI/Gemini key for real answers
+    </p>
+
+    <div class="term">
+      <div class="term-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+      <div class="term-body">
+        <div class="tag">LISTENING… → TRANSCRIBING… → READY</div>
+        <p class="q">Interviewer: "Tell me about your strongest project."</p>
+        <p class="a">"Sure — my strongest project is the real-time chat application I built with React and
+          Node.js. I handled the websocket layer end to end, and the part I'm most proud of is the
+          reconnection logic that kept it stable for 500 concurrent users…"</p>
+        <div class="tag">PROJECT · grounded in resume · [Copy] [Regenerate] [Shorter] [Simpler]</div>
+      </div>
+    </div>
+  </header>
+
+  <section class="wrap">
+    <h2>Why it's different</h2>
+    <div class="grid">
+      <div class="card"><span class="emoji">🔒</span><h3>Privacy-first by design</h3>
+        <p>Resume, job descriptions and session history never leave your machine. The only network traffic is to the AI provider you explicitly configure.</p></div>
+      <div class="card"><span class="emoji">📄</span><h3>Resume grounding engine</h3>
+        <p>Parses your PDF/DOCX resume into structured data and answers only from verified facts — it never invents jobs, projects or certifications.</p></div>
+      <div class="card"><span class="emoji">🎤</span><h3>Speech → answer pipeline</h3>
+        <p>Local voice-activity detection segments the interviewer's question, transcribes it, classifies it and generates a context-aware answer.</p></div>
+      <div class="card"><span class="emoji">🧠</span><h3>Follow-up aware</h3>
+        <p>"What was the biggest challenge?" just works — a compact context engine keeps recent Q&amp;A in memory without resending your whole interview.</p></div>
+      <div class="card"><span class="emoji">💻</span><h3>Coding &amp; SQL modes</h3>
+        <p>Approach, correct code, time/space complexity for coding questions. Query + concise explanation for SQL. HR answers that sound human, not corporate.</p></div>
+      <div class="card"><span class="emoji">🪟</span><h3>Floating window</h3>
+        <p>Compact always-on-top mode with adjustable opacity and global shortcuts — plus a prominent STOP that instantly kills mic and pending requests.</p></div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <h2>Up and running in 4 steps</h2>
+    <div class="steps">
+      <div class="step"><div>Download the installer above (or clone the repo and run <code>start.bat</code>).</div></div>
+      <div class="step"><div>Launch it — the app works instantly in free offline <strong>Mock mode</strong>.</div></div>
+      <div class="step"><div>For real answers: <strong>Settings → AI Provider</strong> → paste your own OpenAI or Gemini API key.</div></div>
+      <div class="step"><div>Upload resume → paste job description → <strong>Start Interview</strong>.</div></div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="privacy">
+      <h3>🛡 An honest note</h3>
+      <p>
+        This is a normal desktop application: fully visible in Task Manager, no hiding, no evasion of
+        system monitoring, no telemetry. It's a free personal tool for practicing and preparing —
+        use it responsibly and honestly.
+      </p>
+    </div>
+  </section>
+
+  <footer class="wrap">
+    MIT licensed · built with Electron, React &amp; TypeScript ·
+    <a href="https://github.com/Anubhav-01/ai-interview-assistant">GitHub</a> · <a href="https://github.com/Anubhav-01/ai-interview-assistant/blob/main/docs/SETUP.md">Setup guide</a> ·
+    <a href="https://github.com/Anubhav-01/ai-interview-assistant/blob/main/README.md#privacy">Privacy</a>
+  </footer>
+</body>
+</html>
